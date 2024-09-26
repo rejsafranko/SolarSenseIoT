@@ -1,0 +1,10 @@
+.env
+
+ml/env
+ml/wandb
+
+ml/models/*
+!ml/models/.gitkeep
+
+ml/data/*
+!ml/data/.gitkeep
