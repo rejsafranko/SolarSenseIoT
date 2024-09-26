@@ -1,6 +1,8 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { SNS } from "aws-sdk";
+import dotenv from "dotenv";
 
+dotenv.config();
 const sns = new SNS();
 
 export const handler = async (
@@ -13,7 +15,7 @@ export const handler = async (
     const message = `Alert from device: ${device_id}`;
     const params = {
       Message: message,
-      TopicArn: "arn:aws:sns:us-east-1:123456789012:MySNSTopic",
+      TopicArn: process.env.AWS_SNS_ARN,
       Subject: "IoT Device Notification",
     };
     await sns.publish(params).promise();
