@@ -23,7 +23,7 @@ The **SolarSense** system is designed to improve the efficiency of solar panels 
 - **AWS Lambda**: The Lambda function processes the incoming MQTT message and sends a notification (e.g., email or SMS) to the user.
 
 ## Project Architecture
-[Raspberry Pi + Camera] ----MQTT----> [AWS Lambda Notification Service] | v [Notification (Email/SMS/Push)]
+[Raspberry Pi + Camera] ----MQTT----> [AWS SNS]---->  [AWS Lambda Notification (Email/SMS/Push)]
 
 - **Raspberry Pi**: Runs the computer vision model and publishes results via MQTT.
 - **AWS Lambda**: Listens for MQTT messages, processes them, and triggers the notification service.
