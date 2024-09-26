@@ -1,2 +1,4 @@
+keras==3.3.0
+opencv-python==4.10.0.84
 paho-mqtt==2.1.0
 python-dotenv==1.0.1
