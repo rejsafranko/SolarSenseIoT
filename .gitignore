@@ -8,3 +8,8 @@ ml/models/*
 
 ml/data/*
 !ml/data/.gitkeep
+
+api/node_modules
+api/dist
+
+iot/env
