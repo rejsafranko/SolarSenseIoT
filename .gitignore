@@ -11,5 +11,6 @@ ml/data/*
 
 api/node_modules
 api/dist
+api/deployment-package.zip
 
 iot/env
