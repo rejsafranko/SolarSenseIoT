@@ -15,3 +15,5 @@ api/deployment-package.zip
 
 iot/env
 iot/certs
+iot/models
+!iot/models/.gitkeep
