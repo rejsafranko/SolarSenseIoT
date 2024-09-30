@@ -5,9 +5,9 @@ from iot.src.modules.ImageProcessor import ImageProcessor
 
 
 class ModelService:
-    def __init__(self, image_processor: ImageProcessor):
+    def __init__(self, model_path: str, image_processor: ImageProcessor):
         self.image_processor = image_processor
-        self._model = self._load_model()
+        self._model = self._load_model(model_path=model_path)
 
     def _load_model(self, model_path: str) -> keras.models.Sequential:
         """Loads the pre-trained TensorFlow model."""

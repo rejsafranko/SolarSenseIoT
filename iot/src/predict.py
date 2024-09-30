@@ -36,7 +36,7 @@ def publish_mqtt_message(client: mqtt.Client):
 
 
 if __name__ == "__main__":
-    model_service = ModelService(image_processor=ImageProcessor())
+    model_service = ModelService(model_path=MODEL_PATH, image_processor=ImageProcessor())
     image = model_service.image_processor.capture_image()
     # if image is not None:
     # prediction = model_service.run_inference(image)
