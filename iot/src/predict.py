@@ -32,7 +32,7 @@ def on_publish(**kwargs) -> None:
 
 def publish_mqtt_message(client: mqtt.Client):
     """Publishes an MQTT message to trigger the AWS IoT notification."""
-    client.publish(MQTT_TOPIC, str(payload), qos=2)
+    client.publish(MQTT_TOPIC, str(payload), qos=1)
 
 
 if __name__ == "__main__":
