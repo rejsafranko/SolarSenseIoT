@@ -1,7 +1,7 @@
 import keras
 import numpy
 
-from ImageProcessor import ImageProcessor
+from iot.src.modules.ImageProcessor import ImageProcessor
 
 
 class ModelService:
