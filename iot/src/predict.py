@@ -63,7 +63,7 @@ if __name__ == "__main__":
         mqtt_client.connect(MQTT_HOST, int(MQTT_PORT), keepalive=60)
         mqtt_client.loop_start()
         publish_mqtt_message(mqtt_client)
-        time.sleep(5)
+        time.sleep(20)
         mqtt_client.loop_stop()
         mqtt_client.disconnect()
     else:
