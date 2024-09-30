@@ -1,6 +1,7 @@
 import os
 import ssl
 import time
+import json
 import keras
 import numpy
 import cv2
@@ -32,7 +33,7 @@ def on_publish(**kwargs) -> None:
 
 def publish_mqtt_message(client: mqtt.Client):
     """Publishes an MQTT message to trigger the AWS IoT notification."""
-    client.publish(MQTT_TOPIC, str(payload), qos=1)
+    client.publish(MQTT_TOPIC, json.dumps(payload), qos=1)
 
 
 if __name__ == "__main__":
