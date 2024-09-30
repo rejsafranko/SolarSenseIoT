@@ -7,8 +7,8 @@ import cv2
 import paho.mqtt.client as mqtt
 from dotenv import load_dotenv
 
-from iot.src.modules.ImageProcessor import ImageProcessor
-from iot.src.modules.ModelService import ModelService
+from src.modules.ImageProcessor import ImageProcessor
+from src.modules.ModelService import ModelService
 
 load_dotenv()
 MQTT_HOST = os.getenv("MQTT_HOST")
