@@ -1,7 +1,7 @@
 import keras
 import numpy
 
-from ImageProcessor import ImageProcessor
+from .ImageProcessor import ImageProcessor
 
 
 class ModelService:
