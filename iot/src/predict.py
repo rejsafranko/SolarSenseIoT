@@ -45,7 +45,7 @@ if __name__ == "__main__":
     prediction = 1
     print(f"Prediction: {'dirty' if 1 else 'clean'}")
     if prediction == 1:
-        mqtt_client = mqtt.Client(protocol=mqtt.MQTTv311)
+        mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
         mqtt_client.tls_set(
             ca_certs=ROOT_CA_PATH,
             certfile=CERT_PATH,
