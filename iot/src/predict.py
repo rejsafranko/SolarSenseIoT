@@ -23,8 +23,12 @@ MODEL_PATH = os.getenv("MODEL_PATH")
 payload = {"device_id": "Raspberry Pi Sigma"}
 
 
-def on_connect(rc: int, **kwargs) -> None:
-    print("Connected to AWS IoT: " + str(rc))
+def on_connect(client, userdata, flags, rc):
+    if rc == 0:
+        print(f"Connected to AWS IoT: {rc}")
+        client.connected_flag = True  # Set flag
+    else:
+        print(f"Connection failed with status code: {rc}")
 
 
 def on_publish(**kwargs) -> None:
