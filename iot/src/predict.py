@@ -36,8 +36,10 @@ def publish_mqtt_message(client: mqtt.Client):
 
 
 if __name__ == "__main__":
-    model_service = ModelService(model_path=MODEL_PATH, image_processor=ImageProcessor())
-    image = model_service.image_processor.capture_image()
+    model_service = ModelService(
+        model_path=MODEL_PATH, image_processor=ImageProcessor()
+    )
+    # image = model_service.image_processor.capture_image()
     # if image is not None:
     # prediction = model_service.run_inference(image)
     prediction = 1
@@ -53,7 +55,7 @@ if __name__ == "__main__":
 
         mqtt_client.on_connect = on_connect
         mqtt_client.on_publish = on_publish
-        mqtt_client.connect(MQTT_HOST, MQTT_PORT, keepalive=60)
+        mqtt_client.connect(MQTT_HOST, int(MQTT_PORT), keepalive=60)
         mqtt_client.loop_start()
         publish_mqtt_message(mqtt_client)
         time.sleep(5)
