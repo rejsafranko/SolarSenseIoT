@@ -7,8 +7,8 @@ import cv2
 import paho.mqtt.client as mqtt
 from dotenv import load_dotenv
 
-from modules.ImageProcessor import ImageProcessor
-from modules.ModelService import ModelService
+from modules import ImageProcessor
+from modules import ModelService
 
 load_dotenv()
 MQTT_HOST = os.getenv("MQTT_HOST")
