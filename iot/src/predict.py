@@ -19,7 +19,7 @@ CERT_PATH = os.getenv("CERT_PATH")
 KEY_PATH = os.getenv("KEY_PATH")
 MODEL_PATH = os.getenv("MODEL_PATH")
 
-payload = {"device_id": "IoTDevice001"}
+payload = {"device_id": "Raspberry Pi Sigma"}
 
 
 def on_connect(rc: int, **kwargs) -> None:
@@ -32,7 +32,7 @@ def on_publish(**kwargs) -> None:
 
 def publish_mqtt_message(client: mqtt.Client):
     """Publishes an MQTT message to trigger the AWS IoT notification."""
-    client.publish(MQTT_TOPIC, str(payload), qos=1)
+    client.publish(MQTT_TOPIC, str(payload), qos=2)
 
 
 if __name__ == "__main__":
