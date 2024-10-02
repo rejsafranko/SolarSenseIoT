@@ -36,8 +36,12 @@ def on_publish(**kwargs) -> None:
 
 def publish_mqtt_message(client: mqtt.Client):
     """Publishes an MQTT message to trigger the AWS IoT notification."""
-    client.publish(MQTT_TOPIC, json.dumps(payload), qos=1)
-
+    if client.connected_flag:
+        result = client.publish(MQTT_TOPIC, json.dumps(payload), qos=1)
+        result.wait_for_publish()
+        print(f"Published: {result.is_published()}")
+    else:
+        print("Client is not connected. Cannot publish.")
 
 if __name__ == "__main__":
     camera_service = CameraService()
@@ -62,6 +66,7 @@ if __name__ == "__main__":
         mqtt_client.on_publish = on_publish
         mqtt_client.connect(MQTT_HOST, int(MQTT_PORT), keepalive=60)
         mqtt_client.loop_start()
+        time.sleep(5)
         publish_mqtt_message(mqtt_client)
         time.sleep(20)
         mqtt_client.loop_stop()
