@@ -18,4 +18,6 @@ class CameraService:
 
     def dummy_image(self) -> numpy.ndarray:
         image = cv2.imread("../20210916_094041_1_11zon.jpg", cv2.IMREAD_COLOR)
+        print(image)
+        print(image.shape)
         return image
