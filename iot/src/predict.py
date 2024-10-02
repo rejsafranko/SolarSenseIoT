@@ -19,13 +19,6 @@ ROOT_CA_PATH = os.getenv("ROOT_CA_PATH")
 CERT_PATH = os.getenv("CERT_PATH")
 KEY_PATH = os.getenv("KEY_PATH")
 MODEL_PATH = os.getenv("MODEL_PATH")
-print(MQTT_HOST)
-print(MQTT_PORT)
-print(MQTT_TOPIC)
-print(ROOT_CA_PATH)
-print(CERT_PATH)
-print(KEY_PATH)
-print(MODEL_PATH)
 
 payload = {"device_id": "Raspberry Pi Sigma"}
 
