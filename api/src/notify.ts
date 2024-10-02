@@ -9,9 +9,8 @@ export const handler = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
   try {
-    const { device_id } = event.body
-      ? JSON.parse(event.body)
-      : { device_id: "Unknown Device" };
+    const payload = typeof event === "string" ? JSON.parse(event) : event;
+    const device_id = payload.device_id || "Unknown Device";
     const message = `Alert from device: ${device_id}`;
     const params = {
       Message: message,
