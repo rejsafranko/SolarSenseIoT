@@ -40,12 +40,7 @@ def on_publish(client, userdata, mid, reason_codes, properties) -> None:
 
 def publish_mqtt_message(client: mqtt.Client):
     """Publishes an MQTT message to trigger the AWS IoT notification."""
-    if client.connected_flag:
-        result = client.publish(MQTT_TOPIC, json.dumps(payload), qos=1)
-        result.wait_for_publish()
-        print(f"Published: {result.is_published()}")
-    else:
-        print("Client is not connected. Cannot publish.")
+    client.publish(MQTT_TOPIC, json.dumps(payload), qos=1)
 
 
 if __name__ == "__main__":
@@ -53,11 +48,7 @@ if __name__ == "__main__":
     model_service = ModelService(
         model_path=MODEL_PATH, image_processor=ImageProcessor()
     )
-    # image = camera_service.image_processor.capture_image()
-    # if image is not None:
-    # prediction = model_service.run_inference(image)
     prediction = 1
-    print(f"Prediction: {'dirty' if 1 else 'clean'}")
     if prediction == 1:
         mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
         mqttc.tls_set(
@@ -70,11 +61,11 @@ if __name__ == "__main__":
         mqttc.on_connect = on_connect
         mqttc.on_publish = on_publish
         mqttc.connect(MQTT_HOST, int(MQTT_PORT), keepalive=60)
-        # mqtt_client.loop_start()
-        # time.sleep(5)
-        # publish_mqtt_message(mqtt_client)
-        # time.sleep(20)
-        # mqtt_client.loop_stop()
+        mqttc.loop_start()
+        time.sleep(5)
+        publish_mqtt_message(mqttc)
+        time.sleep(20)
+        mqttc.loop_stop()
         mqttc.disconnect()
     else:
         print("Prediction was 0. No MQTT message sent.")
