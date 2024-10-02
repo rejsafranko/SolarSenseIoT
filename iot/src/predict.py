@@ -61,9 +61,9 @@ if __name__ == "__main__":
     if prediction == 1:
         mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
         mqttc.tls_set(
-            ca_certs="ROOT_CA_PATH",
-            certfile="CERT_PATH",
-            keyfile="KEY_PATH",
+            ca_certs=ROOT_CA_PATH,
+            certfile=CERT_PATH,
+            keyfile=KEY_PATH,
             tls_version=ssl.PROTOCOL_TLSv1_2,
         )
         mqttc.tls_insecure_set(True)
