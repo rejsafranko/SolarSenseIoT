@@ -17,5 +17,5 @@ class CameraService:
         return frame
 
     def dummy_image(self) -> numpy.ndarray:
-        image = cv2.imread(filename="../dummy.png", flag=cv2.IMREAD_COLOR)
+        image = cv2.imread(filename="../20210916_094041_1_11zon.jpg", flag=cv2.IMREAD_COLOR)
         return image
