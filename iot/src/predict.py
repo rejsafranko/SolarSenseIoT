@@ -59,24 +59,22 @@ if __name__ == "__main__":
     prediction = 1
     print(f"Prediction: {'dirty' if 1 else 'clean'}")
     if prediction == 1:
-        mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
-        mqtt_client.tls_set(
-            ca_certs=ROOT_CA_PATH,
-            certfile=CERT_PATH,
-            keyfile=KEY_PATH,
+        mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
+        mqttc.tls_set(
+            ca_certs="ROOT_CA_PATH",
+            certfile="CERT_PATH",
+            keyfile="KEY_PATH",
             tls_version=ssl.PROTOCOL_TLSv1_2,
         )
-        mqtt_client.tls_insecure_set(True)
-        mqtt_client.on_connect = on_connect
-        mqtt_client.on_publish = on_publish
-        result = mqtt_client.connect(MQTT_HOST, int(MQTT_PORT), keepalive=60)
-        print(result)
+        mqttc.tls_insecure_set(True)
+        mqttc.on_connect = on_connect
+        mqttc.on_publish = on_publish
+        mqttc.connect(MQTT_HOST, int(MQTT_PORT), keepalive=60)
         # mqtt_client.loop_start()
         # time.sleep(5)
         # publish_mqtt_message(mqtt_client)
         # time.sleep(20)
         # mqtt_client.loop_stop()
-        result = mqtt_client.disconnect()
-        print(result)
+        mqttc.disconnect()
     else:
         print("Prediction was 0. No MQTT message sent.")
