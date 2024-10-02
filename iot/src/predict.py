@@ -55,20 +55,22 @@ if __name__ == "__main__":
     print(f"Prediction: {'dirty' if 1 else 'clean'}")
     if prediction == 1:
         mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
+        print(mqtt_client)
         mqtt_client.tls_set(
             ca_certs=ROOT_CA_PATH,
             certfile=CERT_PATH,
             keyfile=KEY_PATH,
             tls_version=ssl.PROTOCOL_TLSv1_2,
         )
+        print(mqtt_client)
 
         mqtt_client.on_connect = on_connect
         mqtt_client.on_publish = on_publish
         mqtt_client.connect(MQTT_HOST, int(MQTT_PORT), keepalive=60)
         mqtt_client.loop_start()
-        time.sleep(5)
-        publish_mqtt_message(mqtt_client)
-        time.sleep(20)
+        #time.sleep(5)
+        #publish_mqtt_message(mqtt_client)
+        #time.sleep(20)
         mqtt_client.loop_stop()
         mqtt_client.disconnect()
     else:
