@@ -19,8 +19,7 @@ ROOT_CA_PATH = os.getenv("ROOT_CA_PATH")
 CERT_PATH = os.getenv("CERT_PATH")
 KEY_PATH = os.getenv("KEY_PATH")
 MODEL_PATH = os.getenv("MODEL_PATH")
-
-payload = {"device_id": "Raspberry Pi Sigma"}
+PAYLOAD = {"device_id": "Raspberry Pi Sigma"}
 
 
 def on_connect(client, userdata, flags, rc, properties):
@@ -33,7 +32,7 @@ def on_publish(client, userdata, mid, reason_codes, properties) -> None:
 
 def publish_mqtt_message(client: mqtt.Client):
     """Publishes an MQTT message to trigger the AWS IoT notification."""
-    client.publish(MQTT_TOPIC, json.dumps(payload), qos=1)
+    client.publish(MQTT_TOPIC, json.dumps(PAYLOAD), qos=1)
 
 
 if __name__ == "__main__":
@@ -41,7 +40,9 @@ if __name__ == "__main__":
     model_service = ModelService(
         model_path=MODEL_PATH, image_processor=ImageProcessor()
     )
-    prediction = 1
+    image = camera_service.dummy_image()
+    prediction = model_service.run_inference(image)
+
     if prediction == 1:
         mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
         mqttc.tls_set(
@@ -55,9 +56,9 @@ if __name__ == "__main__":
         mqttc.on_publish = on_publish
         mqttc.connect(MQTT_HOST, int(MQTT_PORT), keepalive=60)
         mqttc.loop_start()
-        time.sleep(5)
+        time.sleep(1)
         publish_mqtt_message(mqttc)
-        time.sleep(20)
+        time.sleep(10)
         mqttc.loop_stop()
         mqttc.disconnect()
     else:
