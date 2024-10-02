@@ -8,8 +8,7 @@ import cv2
 import paho.mqtt.client as mqtt
 from dotenv import load_dotenv
 
-from modules import ImageProcessor
-from modules import ModelService
+from modules import CameraService, ImageProcessor, ModelService
 
 load_dotenv()
 MQTT_HOST = os.getenv("MQTT_HOST")
@@ -41,10 +40,11 @@ def publish_mqtt_message(client: mqtt.Client):
 
 
 if __name__ == "__main__":
+    camera_service = CameraService()
     model_service = ModelService(
         model_path=MODEL_PATH, image_processor=ImageProcessor()
     )
-    # image = model_service.image_processor.capture_image()
+    # image = camera_service.image_processor.capture_image()
     # if image is not None:
     # prediction = model_service.run_inference(image)
     prediction = 1
