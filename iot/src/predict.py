@@ -5,6 +5,7 @@ import json
 import keras
 import numpy
 import cv2
+import _thread
 import paho.mqtt.client as mqtt
 from dotenv import load_dotenv
 
@@ -18,16 +19,19 @@ ROOT_CA_PATH = os.getenv("ROOT_CA_PATH")
 CERT_PATH = os.getenv("CERT_PATH")
 KEY_PATH = os.getenv("KEY_PATH")
 MODEL_PATH = os.getenv("MODEL_PATH")
+print(MQTT_HOST)
+print(MQTT_PORT)
+print(MQTT_TOPIC)
+print(ROOT_CA_PATH)
+print(CERT_PATH)
+print(KEY_PATH)
+print(MODEL_PATH)
 
 payload = {"device_id": "Raspberry Pi Sigma"}
 
 
 def on_connect(client, userdata, flags, rc):
-    if rc == 0:
-        print(f"Connected to AWS IoT: {rc}")
-        client.connected_flag = True  # Set flag
-    else:
-        print(f"Connection failed with status code: {rc}")
+    print(f"Connected to AWS IoT: {rc}")
 
 
 def on_publish(**kwargs) -> None:
@@ -42,6 +46,7 @@ def publish_mqtt_message(client: mqtt.Client):
         print(f"Published: {result.is_published()}")
     else:
         print("Client is not connected. Cannot publish.")
+
 
 if __name__ == "__main__":
     camera_service = CameraService()
@@ -62,16 +67,17 @@ if __name__ == "__main__":
             keyfile=KEY_PATH,
             tls_version=ssl.PROTOCOL_TLSv1_2,
         )
+        mqtt_client.tls_insecure_set(True)
         print(mqtt_client)
 
         mqtt_client.on_connect = on_connect
         mqtt_client.on_publish = on_publish
         mqtt_client.connect(MQTT_HOST, int(MQTT_PORT), keepalive=60)
-        mqtt_client.loop_start()
-        #time.sleep(5)
-        #publish_mqtt_message(mqtt_client)
-        #time.sleep(20)
-        mqtt_client.loop_stop()
+        # mqtt_client.loop_start()
+        # time.sleep(5)
+        # publish_mqtt_message(mqtt_client)
+        # time.sleep(20)
+        # mqtt_client.loop_stop()
         mqtt_client.disconnect()
     else:
         print("Prediction was 0. No MQTT message sent.")
