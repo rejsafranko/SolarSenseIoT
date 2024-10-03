@@ -1,29 +1,66 @@
 # SolarSense: Solar Panel Monitoring System
-
-**SolarSense** is an IoT-based system that utilizes computer vision to monitor the cleanliness of solar panels. It employs a camera attached to a Raspberry Pi to periodically capture images of the solar panels. A fine-tuned computer vision model runs on the Raspberry Pi to detect whether the panels are dirty. If the model detects dirt, it triggers a notification system to alert the user for cleaning.
+The SolarSense project aims to streamline the detection and notification of dirty solar panels using a combined IoT and machine learning (ML) solution. It leverages a Raspberry Pi camera to capture images, runs a trained ML model locally to detect panel cleanliness, and sends an alert via AWS SNS, AWS Lambda and AWS IoT using MQTT if cleaning is required.
 
 ## Table of Contents
-- [Overview](#overview)
-- [Project Architecture](#project-architecture)
-- [Setup](#setup)
-  - [Prerequisites](#prerequisites)
-  - [Raspberry Pi Setup](#raspberry-pi-setup)
-  - [Deploying the Computer Vision Model](#deploying-the-computer-vision-model)
-  - [API Deployment on AWS Lambda](#api-deployment-on-aws-lambda)
-  - [MQTT Broker Setup](#mqtt-broker-setup)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
+1. [API Service](#3-api-service)
+2. [IoT Client](#4-iot-system)
+3. [Machine Learning (ML) System](#5-machine-learning-ml-system)
+4. [Data Management](#6-data-management)
+5. [Deployment & Infrastructure](#7-deployment--infrastructure)
 
-## Overview
+## 1. API Service
 
-The **SolarSense** system is designed to improve the efficiency of solar panels by detecting when they are dirty and notifying the user when cleaning is necessary. The system works as follows:
+The API handles the task of sending notifications via AWS Simple Notification Service (SNS) when the IoT system detects dirty solar panels. It is implemented as an AWS Lambda function.
 
-- **Raspberry Pi**: Periodically captures images of the solar panels and uses a pre-trained machine learning model to detect dirt. If dirt is detected, the system sends an MQTT message to an AWS Lambda function.
-- **AWS Lambda**: The Lambda function processes the incoming MQTT message and sends a notification (e.g., email or SMS) to the user.
+AWS IoT receives a payload containing a device ID and trigger a Lambda function to send an alert via AWS SNS when dirty solar panels are detected.
 
-## Project Architecture
-[Raspberry Pi + Camera] ----MQTT----> [AWS SNS]---->  [AWS Lambda Notification (Email/SMS/Push)]
+```typescript
+import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
+import { SNS } from "aws-sdk";
+import dotenv from "dotenv";
 
-- **Raspberry Pi**: Runs the computer vision model and publishes results via MQTT.
-- **AWS Lambda**: Listens for MQTT messages, processes them, and triggers the notification service.
+dotenv.config();
+const sns = new SNS();
+
+export const handler = async (
+  event: APIGatewayProxyEvent
+): Promise<APIGatewayProxyResult> => {
+  // Function body...
+};
+```
+
+## 2. IoT Client
+
+The IoT component runs on a Raspberry Pi 3, handling a scheduled image capture, model inference, and publishing messages to AWS MQTT broker when necessary. It runs a local computer vision model to classify solar panel images as either clean or dirty.
+
+### Key Components
+
+1. **iot/src/modules/CameraService.py**
+
+The `CameraService` class captures images from the Raspberry Pi camera.
+
+- **capture_image()**: Captures an image using the Raspberry Pi camera with OpenCV.
+- **dummy_image()**: Loads a static image for testing purposes from the local filesystem.
+
+2. **iot/src/modules/ImageProcessor.py**
+
+The ImageProcessor class handles the preprocessing of captured images to prepare them for model inference.
+
+- **preprocess_image()**: Resizes the image to (224, 224) and normalizes the pixel values to the range \[0, 1].
+
+3. **iot/src/modules/ModelService.py**
+
+The ModelService class is responsible for loading the machine learning model and running inference on the captured image.
+
+- **_load_model()**: Loads the pre-trained TensorFlow model from the provided model path.
+- **run_inference()**: Runs inference on a preprocessed image and returns a binary prediction (0 = clean, 1 = dirty).
+
+4. **iot/src/predict.py** (Main IoT Script)
+
+The predict.py script orchestrates the process of capturing an image, running inference, and sending a notification via AWS IoT if the panel is dirty. If the ML model predicts the panel is dirty (prediction == 1), the script publishes an MQTT message to the AWS IoT topic.
+
+- **Capture Image**: Uses the `CameraService` to capture an image from the Raspberry Pi camera.
+- **Run Inference**: The captured image is processed by the `ModelService` to classify it as clean (0) or dirty (1).
+- **MQTT Messaging**: If the panel is classified as dirty (`prediction == 1`), the system publishes an MQTT message to AWS IoT to trigger a notification.
+
+
