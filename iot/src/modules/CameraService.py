@@ -18,7 +18,7 @@ class CameraService:
 
     def dummy_image(self) -> numpy.ndarray:
         image = cv2.imread(
-            "/home/raspberrypi/Projects/solar/SolarSense/iot/20210916_094041_1_11zon.jpg",
+            "/home/raspberrypi/Projects/solar/SolarSense/iot/20210916_094136_4_11zon.jpg",
             cv2.IMREAD_COLOR,
         )
         return image
