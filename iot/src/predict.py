@@ -43,7 +43,7 @@ if __name__ == "__main__":
     image = camera_service.dummy_image()
     prediction = model_service.run_inference(image)
 
-    if prediction == 0:
+    if prediction == 1:
         mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
         mqttc.tls_set(
             ca_certs=ROOT_CA_PATH,

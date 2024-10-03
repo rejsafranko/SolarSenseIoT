@@ -17,4 +17,5 @@ class ModelService:
         """Runs inference on the image and returns prediction (0 or 1)."""
         preprocessed_image = self.image_processor.preprocess_image(image)
         prediction = self._model.predict(preprocessed_image)
-        return prediction[0][0]
+        prediction = 1 if prediction[0][0] > 0.5 else 0
+        return prediction
