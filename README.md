@@ -1,6 +1,8 @@
 # SolarSense: Solar Panel Dirt Notification
 The SolarSense project aims to streamline the detection and notification of dirty solar panels using a combined IoT and machine learning (ML) solution. It leverages a Raspberry Pi camera to capture images, runs a trained ML model locally to detect panel cleanliness, and sends an alert via AWS SNS, AWS Lambda and AWS IoT using MQTT if cleaning is required.
 
+!(architecture.png)
+
 ## Table of Contents
 1. [API Service](#1-api-service)
 2. [IoT Client](#2-iot-client)
