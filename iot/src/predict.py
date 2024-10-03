@@ -43,7 +43,7 @@ if __name__ == "__main__":
     image = camera_service.dummy_image()
     prediction = model_service.run_inference(image)
 
-    if prediction == 1:
+    if prediction == 0:
         mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
         mqttc.tls_set(
             ca_certs=ROOT_CA_PATH,
@@ -62,4 +62,4 @@ if __name__ == "__main__":
         mqttc.loop_stop()
         mqttc.disconnect()
     else:
-        print("Prediction was 0. No MQTT message sent.")
+        print(f"Prediction was {prediction}. No MQTT message sent.")
