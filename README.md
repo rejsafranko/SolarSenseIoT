@@ -2,11 +2,9 @@
 The SolarSense project aims to streamline the detection and notification of dirty solar panels using a combined IoT and machine learning (ML) solution. It leverages a Raspberry Pi camera to capture images, runs a trained ML model locally to detect panel cleanliness, and sends an alert via AWS SNS, AWS Lambda and AWS IoT using MQTT if cleaning is required.
 
 ## Table of Contents
-1. [API Service](#3-api-service)
-2. [IoT Client](#4-iot-system)
-3. [Machine Learning (ML) System](#5-machine-learning-ml-system)
-4. [Data Management](#6-data-management)
-5. [Deployment & Infrastructure](#7-deployment--infrastructure)
+1. [API Service](#1-api-service)
+2. [IoT Client](#2-iot-client)
+3. [Computer Vision Model](#3-computer-vision-model)
 
 ## 1. API Service
 
@@ -54,5 +52,17 @@ The IoT component runs on a Raspberry Pi 3, handling a scheduled image capture, 
 - **Capture Image**: Uses the `CameraService` to capture an image from the Raspberry Pi camera.
 - **Run Inference**: The captured image is processed by the `ModelService` to classify it as clean (0) or dirty (1).
 - **MQTT Messaging**: If the panel is classified as dirty (`prediction == 1`), the system publishes an MQTT message to AWS IoT to trigger a notification.
+
+## 3. Computer Vision Model
+
+The machine learning component of SolarSense handles the training, evaluation, and inference for the model which runs on the IoT device to classify solar panel images as clean or dirty.
+
+### Key Components
+
+1) The configuration file `config-defaults.yaml` defines key parameters for model training, such as the learning rate, batch size, and input image size. These configurations are dynamically loaded during model training using the wandb integration to track experiments.
+
+2) WandB Tracking is integrated to log and monitor the training process.
+
+3) A MobileNetV2 pretrained on ImageNet is used as a backbone model because it is a lightweight model designed for use on edge devices.
 
 
