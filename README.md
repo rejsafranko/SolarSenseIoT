@@ -35,27 +35,27 @@ The IoT component runs on a Raspberry Pi 3, handling a scheduled image capture, 
 
 ### Key Components
 
-1. **iot/src/modules/CameraService.py**
+1) **iot/src/modules/CameraService.py**
 
   The `CameraService` class captures images from the Raspberry Pi camera.
 
   - **capture_image()**: Captures an image using the Raspberry Pi camera with OpenCV.
   - **dummy_image()**: Loads a static image for testing purposes from the local filesystem.
 
-2. **iot/src/modules/ImageProcessor.py**
+2) **iot/src/modules/ImageProcessor.py**
 
   The ImageProcessor class handles the preprocessing of captured images to prepare them for model inference.
 
   - **preprocess_image()**: Resizes the image to (224, 224) and normalizes the pixel values to the range \[0, 1].
 
-3. **iot/src/modules/ModelService.py**
+3) **iot/src/modules/ModelService.py**
 
   The ModelService class is responsible for loading the machine learning model and running inference on the captured image.
 
   - **_load_model()**: Loads the pre-trained TensorFlow model from the provided model path.
   - **run_inference()**: Runs inference on a preprocessed image and returns a binary prediction (0 = clean, 1 = dirty).
 
-4. **iot/src/predict.py** (Main IoT Script)
+4) **iot/src/predict.py** (Main IoT Script)
 
   The predict.py script orchestrates the process of capturing an image, running inference, and sending a notification via AWS IoT if the panel is dirty. If the ML model predicts the panel is dirty (prediction == 1), the script publishes an MQTT message to the AWS IoT topic.
 
