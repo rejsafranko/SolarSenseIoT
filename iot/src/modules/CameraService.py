@@ -15,8 +15,6 @@ class CameraService:
     def capture_image(self) -> numpy.ndarray:
         """Captures an image from Raspberry Pi camera using OpenCV."""
         image = self.camera.capture_array()
-        print(image.shape)
-        exit(0)
         if not image:
             print("Failed to capture image.")
             return None
