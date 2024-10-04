@@ -40,7 +40,7 @@ if __name__ == "__main__":
     model_service = ModelService(
         model_path=MODEL_PATH, image_processor=ImageProcessor()
     )
-    image = camera_service.dummy_image()
+    image = camera_service.capture_image()
     prediction = model_service.run_inference(image)
 
     if prediction == 1:

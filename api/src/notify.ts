@@ -11,7 +11,7 @@ export const handler = async (
   try {
     const payload = typeof event === "string" ? JSON.parse(event) : event;
     const device_id = payload.device_id || "Unknown Device";
-    const message = `Alert from device: ${device_id}`;
+    const message = `${device_id} has detected dirt on your solar panels.`;
     const params = {
       Message: message,
       TopicArn: process.env.AWS_SNS_ARN,
