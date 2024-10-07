@@ -1,7 +1,5 @@
 import cv2
 import numpy
-import picamera2
-
 
 class CameraService:
     def __init__(self):
