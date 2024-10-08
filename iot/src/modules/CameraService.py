@@ -3,7 +3,7 @@ import numpy
 
 class CameraService:
     def __init__(self):
-        self.camera = cv2.VideoCapture(0)
+        self.camera = cv2.VideoCapture(1)
 
     def capture_image(self) -> numpy.ndarray:
         """Captures an image from Raspberry Pi camera using OpenCV."""
