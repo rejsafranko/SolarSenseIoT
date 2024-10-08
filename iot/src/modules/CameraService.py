@@ -1,18 +1,18 @@
 import cv2
 import numpy
+import picamera2
 
 class CameraService:
     def __init__(self):
-        self.camera = cv2.VideoCapture(1)
+        self.camera = picamera2.Picamera2()
 
     def capture_image(self) -> numpy.ndarray:
         """Captures an image from Raspberry Pi camera using OpenCV."""
-        ret, frame = self.camera.read()
-        if not ret:
+        image = self.camera.capture_array()
+        if not image:
             print("Failed to capture image.")
             return None
-        self.camera.release()
-        return frame
+        return image
 
     def dummy_image(self) -> numpy.ndarray:
         image = cv2.imread(
