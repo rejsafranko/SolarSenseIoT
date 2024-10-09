@@ -41,8 +41,9 @@ if __name__ == "__main__":
         model_path=MODEL_PATH, image_processor=ImageProcessor()
     )
     image = camera_service.capture_image()
+    print("Image captured.")
     prediction = model_service.run_inference(image)
-
+    print("Model made a prediction.")
     if prediction == 1:
         mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
         mqttc.tls_set(
