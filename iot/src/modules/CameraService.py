@@ -21,7 +21,7 @@ class CameraService:
         image = self.camera.capture_array()
         print("Image captured.")
         self.camera.stop()
-        if not image:
+        if image is None or image.size == 0:
             print("Failed to capture image.")
             return None
         return image
