@@ -4,9 +4,7 @@ import picamera2
 
 class CameraService:
     def __init__(self):
-        print("init cam")
         self.camera = picamera2.Picamera2()
-        print("finish")
 
     def capture_image(self) -> numpy.ndarray:
         """Captures an image from Raspberry Pi camera using OpenCV."""
