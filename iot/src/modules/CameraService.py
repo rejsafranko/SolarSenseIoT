@@ -19,7 +19,6 @@ class CameraService:
         """Captures an image from Raspberry Pi camera using OpenCV."""
         self.camera.start()
         image = self.camera.capture_array()
-        print("Image captured.")
         self.camera.stop()
         if image is None or image.size == 0:
             print("Failed to capture image.")
