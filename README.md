@@ -33,6 +33,8 @@ export const handler = async (
 
 The IoT component runs on a Raspberry Pi 3, handling a scheduled image capture, model inference, and publishing messages to AWS MQTT broker when necessary. It runs a local computer vision model to classify solar panel images as either clean or dirty.
 
+![MQTT Broker](mqtt.png)
+
 ### Key Components
 
 1) The `CameraService` class captures images from the Raspberry Pi camera.
