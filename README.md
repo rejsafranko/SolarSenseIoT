@@ -61,6 +61,8 @@ The IoT component runs on a Raspberry Pi 3, handling a scheduled image capture, 
 
 The machine learning component of SolarSense handles the training, evaluation, and inference for the model which runs on the IoT device to classify solar panel images as clean or dirty.
 
+![MobileNetV2](mnv2.png)
+
 ### Key Components
 
 1) The configuration file `config-defaults.yaml` defines key parameters for model training, such as the learning rate, batch size, and input image size. These configurations are dynamically loaded during model training using the wandb integration to track experiments.
