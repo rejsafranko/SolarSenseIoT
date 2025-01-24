@@ -61,7 +61,9 @@ The IoT component runs on a Raspberry Pi 3, handling a scheduled image capture, 
 
 The machine learning component of SolarSense handles the training, evaluation, and inference for the model which runs on the IoT device to classify solar panel images as clean or dirty.
 
-![MobileNetV2](mnv2.png)
+<div align="center">
+ <img src="mnv2.png" alt="MobileNetV2" width="400" height="300">
+</div>
 
 ### Key Components
 
