@@ -1,6 +1,8 @@
 import os
 import numpy
 import keras
+import tensorflow
+import tensorflow.lite
 import wandb
 import wandb.integration
 import wandb.integration.keras
@@ -14,7 +16,9 @@ WANDB_API_KEY = os.getenv("WANDB_API_KEY")
 
 def setup_tracking() -> None:
     wandb.login(key=WANDB_API_KEY)
-    wandb.init(project="solar", config="configs/config-defaults.yaml", job_type="training")
+    wandb.init(
+        project="solar", config="configs/config-defaults.yaml", job_type="training"
+    )
 
 
 def build_model() -> keras.models.Sequential:
@@ -62,7 +66,9 @@ def create_callbacks(
         verbose=1,
     )
 
-    wandb_callback = wandb.integration.keras.WandbCallback(monitor="val_accuracy", save_graph=False, save_model=False)
+    wandb_callback = wandb.integration.keras.WandbCallback(
+        monitor="val_accuracy", save_graph=False, save_model=False
+    )
 
     return [checkpoint_callback, early_stopping_callback, wandb_callback]
 
@@ -86,5 +92,11 @@ if __name__ == "__main__":
         epochs=wandb.config["epochs"],
         callbacks=callbacks,
     )
+
+    converter = tensorflow.lite.TFLiteConverter.from_keras_model(model)
+    tensorflow_lite_model = converter.convert()
+
+    with open("models/mobilenetv2.tflite", "wb") as f:
+        f.write(tensorflow_lite_model)
 
     wandb.finish()
