@@ -1,0 +1,47 @@
+name: Deploy IoT Updates
+
+on:
+  push:
+    paths:
+      - 'iot/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          cd iot
+          pip install -r requirements.txt
+
+      - name: Package IoT Code
+        run: |
+          cd iot
+          tar czf iot-code.tar.gz .  # Package the entire iot directory into a .tar.gz file for deployment.
+
+      - name: Upload IoT Code to S3
+        run: |
+          aws s3 cp iot/iot-code.tar.gz s3://your-bucket/iot-code/iot-code.tar.gz
+
+      - name: Create IoT Job to Update Devices
+        run: |
+          aws iot create-job \
+            --job-id "iot-deployment-$(date +%Y%m%d%H%M)" \
+            --targets "arn:aws:iot:eu-central-1:320329586666:thing/raspberrypi" \
+            --document "{
+              \"operation\": \"update\",
+              \"s3Uri\": \"s3://your-bucket/iot-code/iot-code.tar.gz\"
+            }"
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: 'eu-central-1'  # Set your AWS region (e.g., us-west-2)
