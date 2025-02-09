@@ -28,7 +28,7 @@ The system consists of three key components:
 2. **API Service:** Handles notifications and integrates with AWS IoT and SNS.
 3. **Model Training & Deployment:** Uses AWS S3 and MQTT to update IoT devices automatically.
 
-## API Service
+## 1. API Service
 The API is implemented as an AWS Lambda function triggered by AWS IoT. It sends notifications via AWS SNS when a dirty solar panel is detected.
 
 ### Workflow:
