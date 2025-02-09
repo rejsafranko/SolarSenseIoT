@@ -75,18 +75,32 @@ The IoT client runs on a **Raspberry Pi** and is responsible for:
 
 ## 3. Computer Vision Model
 
-The machine learning component of SolarSense handles the training, evaluation, and inference for the model which runs on the IoT device to classify solar panel images as clean or dirty.
+The computer vision model is based on **MobileNetV2** and trained using **TensorFlow & Keras**.  
+It is designed to classify images of solar panels as **clean** or **dirty**.
 
 <div align="center">
  <img src="mnv2.png" alt="MobileNetV2">
 </div>
 
-### Key Components
+### Model Architecture
+The model leverages **transfer learning**, using MobileNetV2 as the feature extractor:
+- **Base Model**: MobileNetV2 (pretrained on ImageNet, frozen weights).
+- **Global Average Pooling Layer**: Reduces feature map size.
+- **Dense Layer (1024 neurons, ReLU activation)**: Learns solar panel-specific patterns.
+- **Dropout Layer**: Prevents overfitting (value set via configuration).
+- **Output Layer (1 neuron, Sigmoid activation)**: Performs binary classification.
 
-1) The configuration file `config-defaults.yaml` defines key parameters for model training, such as the learning rate, batch size, and input image size. These configurations are dynamically loaded during model training using the wandb integration to track experiments.
+### Training Pipeline
+1. **Dataset Preparation**: Images are preprocessed and split into training, validation, and test sets.
+2. **Model Training**: The model is trained using an **Adam optimizer** with a **binary cross-entropy loss function**.
+3. **Performance Monitoring**: Training metrics (accuracy, loss) are logged using **Weights & Biases (WandB)**.
+4. **Early Stopping & Checkpointing**: Ensures the best-performing model is saved.
+5. **Evaluation**: The model is tested on unseen data to measure accuracy, precision, recall, and F1-score.
 
-2) WandB Tracking is integrated to log and monitor the training process.
+### Model Deployment
+- The trained model is **converted to TensorFlow Lite (TFLite)** for efficient edge deployment.
+- The **optimized model is uploaded to AWS S3** for centralized distribution if it is the champion model on the test set.
+- IoT devices **receive automatic updates** via **MQTT messaging** when a new model is available.
 
-3) A MobileNetV2 pretrained on ImageNet is used as a backbone model because it is a lightweight model designed for use on edge devices.
 
 
