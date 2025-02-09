@@ -1,3 +1,5 @@
+import logging
+
 import numpy
 import tensorflow
 import tensorflow.lite
@@ -15,6 +17,15 @@ class ModelService:
         interpreter = tensorflow.lite.Interpreter(model_path)
         interpreter.allocate_tensors()
         return interpreter
+
+    def reload_model(self, model_path: str) -> None:
+        """Reloads the model from the given path."""
+        if model_path != self.model_path:
+            logging.info(f"Reloading model from {model_path}")
+            self._model = self._load_model(model_path)
+            self.model_path = model_path
+        else:
+            logging.info(f"Model path is unchanged, skipping reload.")
 
     def run_inference(self, image: numpy.ndarray) -> 0 | 1:
         """Runs inference on the image and returns prediction (0 or 1)."""
