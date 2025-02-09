@@ -1,18 +1,40 @@
 # SolarSense: Solar Panel Dirt Notification
-The SolarSense project aims to streamline the detection and notification of dirty solar panels using a combined IoT and machine learning (ML) solution. It leverages a Raspberry Pi camera to capture images, runs a trained ML model locally to detect panel cleanliness, and sends an alert via AWS SNS, AWS Lambda and AWS IoT using MQTT if cleaning is required.
+
+SolarSense is an IoT and machine learning (ML) solution designed to detect and notify users when solar panels require cleaning. By leveraging a Raspberry Pi camera, an onboard TensorFlow Lite model, and AWS cloud services, SolarSense provides an automated system for maintaining optimal solar panel efficiency.
 
 ![Architecture](architecture.png)
 
 ## Table of Contents
-1. [API Service](#1-api-service)
-2. [IoT Client](#2-iot-client)
-3. [Computer Vision Model](#3-computer-vision-model)
+1. [Overview](#overview)
+2. [System Architecture](#system-architecture)
+3. [API Service](#api-service)
+4. [IoT Client](#iot-client)
+5. [Model Training & Deployment](#model-training--deployment)
+6. [Deployment](#deployment)
+7. [Future Enhancements](#future-enhancements)
+8. [Contributing](#contributing)
+9. [License](#license)
 
-## 1. API Service
+## Overview
+Solar panels accumulate dirt over time, reducing efficiency. SolarSense automates the detection process by:
+- Capturing images using a Raspberry Pi camera
+- Running a TensorFlow Lite ML model locally to classify images as clean or dirty
+- Automatically deploying updated models via AWS S3 and MQTT
+- Sending alerts via AWS SNS when cleaning is required
 
-The API handles the task of sending notifications via AWS Simple Notification Service (SNS) when the IoT system detects dirty solar panels. It is implemented as an AWS Lambda function.
+## System Architecture
+The system consists of three key components:
+1. **IoT Client:** Runs on a Raspberry Pi, captures images, and performs inference.
+2. **API Service:** Handles notifications and integrates with AWS IoT and SNS.
+3. **Model Training & Deployment:** Uses AWS S3 and MQTT to update IoT devices automatically.
 
-AWS IoT receives a payload containing a device ID and trigger a Lambda function to send an alert via AWS SNS when dirty solar panels are detected.
+## API Service
+The API is implemented as an AWS Lambda function triggered by AWS IoT. It sends notifications via AWS SNS when a dirty solar panel is detected.
+
+### Workflow:
+1. The IoT device publishes an MQTT message to AWS IoT Core.
+2. AWS IoT triggers the Lambda function.
+3. The Lambda function sends a notification via AWS SNS.
 
 ```typescript
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
@@ -25,7 +47,7 @@ const sns = new SNS();
 export const handler = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
-  // Function body...
+  // Function implementation...
 };
 ```
 
