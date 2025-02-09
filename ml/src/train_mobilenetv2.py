@@ -7,12 +7,12 @@ import wandb
 import wandb.integration
 import wandb.integration.keras
 
-from typing import List
+from typing import List, Union
 from dotenv import load_dotenv
 
 load_dotenv()
 WANDB_API_KEY = os.getenv("WANDB_API_KEY")
-
+assert WANDB_API_KEY is not None, "WANDB_API_KEY is not set. Check the .env file."
 
 def setup_tracking() -> None:
     wandb.login(key=WANDB_API_KEY)
@@ -50,7 +50,7 @@ def build_model() -> keras.models.Sequential:
 
 def create_callbacks(
     model_save_path: str, patience: int
-) -> List[keras.callbacks.Callback | wandb.integration.keras.WandbCallback]:
+) -> List[Union[keras.callbacks.Callback, wandb.integration.keras.WandbCallback]]:
     checkpoint_callback = keras.callbacks.ModelCheckpoint(
         filepath=model_save_path,
         save_best_only=True,
@@ -94,6 +94,7 @@ if __name__ == "__main__":
     )
 
     converter = tensorflow.lite.TFLiteConverter.from_keras_model(model)
+    converter.optimizations = [tensorflow.lite.Optimize.DEFAULT]
     tensorflow_lite_model = converter.convert()
 
     with open("models/mobilenetv2.tflite", "wb") as f:
