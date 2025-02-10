@@ -1,4 +1,6 @@
+boto3==1.36.16
 keras==3.3.0
+paho-mqtt==2.1.0
 pillow==10.4.0
 python-dotenv==1.0.1
 scikit-learn==1.5.2

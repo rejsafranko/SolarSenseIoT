@@ -37,11 +37,11 @@ class MQTTClient:
         self.client.on_connect = self.on_connect
         self.client.on_publish = self.on_publish
 
-    def on_connect(self, client, userdata, flags, rc, properties):
+    def on_connect(self, client, userdata, flags, rc, properties) -> None:
         """Handle successful connection."""
         logging.info(f"Connected to AWS IoT with result code {rc}")
 
-    def on_message(self, client, userdata, msg):
+    def on_message(self, client, userdata, msg) -> None:
         """Handle incoming MQTT message."""
         logging.info(f"Received message: {msg.payload.decode()}")
         try:
@@ -55,11 +55,11 @@ class MQTTClient:
         except Exception as e:
             logging.error(f"Error processing message: {e}")
 
-    def on_publish(self, client, userdata, mid, reason_codes, properties):
+    def on_publish(self, client, userdata, mid, reason_codes, properties) -> None:
         """Handle message publishing event."""
         logging.info(f"Message published with mid: {mid}")
 
-    def connect(self):
+    def connect(self) -> None:
         """Connect to the MQTT broker."""
         try:
             self.client.connect(self.host, self.port, keepalive=60)
@@ -70,13 +70,13 @@ class MQTTClient:
             logging.error(f"Failed to connect to MQTT broker: {e}")
             raise
 
-    def disconnect(self):
+    def disconnect(self) -> None:
         """Disconnect from MQTT broker."""
         logging.info("Disconnecting from MQTT broker")
         self.client.loop_stop()
         self.client.disconnect()
 
-    def publish(self, payload: dict):
+    def publish(self, payload: dict) -> None:
         """Publish a message to the specified topic."""
         try:
             self.client.publish(self.topic, json.dumps(payload), qos=2)

@@ -69,7 +69,7 @@ def validate_env_vars() -> None:
         raise ValueError(f"Missing environment variables: {', '.join(missing_vars)}")
 
 
-def setup_tracking(config_path: str) -> wandb.sdk.Run:
+def setup_tracking(config_path: str) -> wandb.sdk.wandb_run.Run:
     """Set up WandB tracking."""
     wandb.login(key=WANDB_API_KEY)
     run = wandb.init(project=WANDB_PROJECT_NAME, config=config_path)
@@ -167,7 +167,7 @@ def train_model(
 
 
 def evaluate_model(
-    model: keras.models.Sequential, data: dict[str, numpy.ndarray], run: wandb.sdk.Run
+    model: keras.models.Sequential, data: dict[str, numpy.ndarray], run: wandb.sdk.wandb_run.Run
 ) -> float:
     true_labels = data["test_labels"]
     predicted_labels = (model.predict(data["test_features"]).flatten() > 0.5).astype(

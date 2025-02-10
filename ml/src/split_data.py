@@ -4,8 +4,6 @@ import numpy
 import keras
 import sklearn.model_selection
 
-from typing import List, Tuple, Dict
-
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
@@ -15,7 +13,7 @@ def parse_args() -> argparse.Namespace:
 
 def load_images_from_directory(
     directory: str, label: int, target_size=(224, 224)
-) -> List[Tuple[numpy.ndarray, int]]:
+) -> list[tuple[numpy.ndarray, int]]:
     images = []
     for filename in os.listdir(directory):
         if filename.endswith(".jpg"):
@@ -29,7 +27,7 @@ def load_images_from_directory(
 
 def load_data(
     data_dir: str, target_size=(224, 224), test_size=0.2, val_size=0.1
-) -> Dict[str, Dict[str, numpy.ndarray]]:
+) -> dict[str, dict[str, numpy.ndarray]]:
     clean_dir = os.path.join(data_dir, "merged", "clean")
     dirty_dir = os.path.join(data_dir, "merged", "dirty")
 
